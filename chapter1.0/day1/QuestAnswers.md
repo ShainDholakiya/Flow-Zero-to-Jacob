@@ -1,0 +1,3 @@
+1. The Blockchain is a knowledge base that holds all sorts of information that anyone can read, update, or post to and is owned by no one.
+2. A smart contract is a custom program that defines sets of functionalities for users to interact with that lives on the Blockchain and is public for anyone to view the code.
+3. Scripts are used to view/read data which costs no money while transactions actually put/update data on the Blockchain which does cost money.
