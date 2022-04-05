@@ -10,7 +10,7 @@ If you're seeing this message, you have arrived at the very first part of the Ze
 
 <img src="./images/course.png" alt="drawing" width="500"/>
 
-In this course, you will learn how to go from 0 computer science programming skills to being as smart as the greatest person on planet Earth, Jacob.
+In this course, you will learn the basic Cadence concepts needed to deploy your own contracts. Specifically, you will learn how to code out your own NFT contract by the end of this course.
 
 The lessons will be split into "chapters," and chapters will be split into "days." I did it this way so you can manage your time and progress through the course as you like. Do not feel pressured to do this every day. Do it at your own pace and have fun with it! It will always be here :)
 
@@ -27,8 +27,6 @@ I would like to be very clear that how you learn from this course is completely 
 Nothing.
 
 In order to complete this course, you need to know absolutely nothing about coding. I included Chapter 1.5 that teaches you the basics of computer programming. 
-
-I believe the Web3 space is innovative in that we are seeing a combination of interests between artists, developers, content creators, etc. In light of this, I wanted to make the course accessible to anyone, so we don't require computer science fundamentals as a prerequisite.
 
 **Although Chapter 1.5 is a great introduction to programming, if you have never written code before, you may also want to do some outside learning before this course, because it can get complicated very quick. It is impossible to learn how to Code by watching tutorials/reading articles. You must mess up on your own to make true progress.**
 
@@ -54,9 +52,13 @@ If you are ready for me to see one of your quests to review it, please message i
 
 ## "When can I start?"
 
-Whenever you want my friend! I will be publishing new content quite frequently, so make sure to stay up to date on all the stuffz :)
+Whenever you want my friend! :)
 
 You can start the first day [here](https://github.com/jacob-tucker/Flow-Zero-to-Jacob/tree/main/chapter1.0/day1).
+
+## <a href="https://academy.ecdao.org" target="_blank">Emerald Academy</a>
+
+This course is being used inside of <a href="https://academy.ecdao.org" target="_blank">Emerald Academy</a>, which is a series of educational resources & bootcamps created by your *best* friends at Emerald City. If you're interested in more educational content or getting involved in the broader Emerald City community, come join our <a href="https://discord.gg/emeraldcity" target="_blank">Discord</a> :)
 
 ## Ending Remarks
 
@@ -69,5 +71,3 @@ Feel free to reach out to me on any of these platforms:
 [YouTube](https://www.youtube.com/channel/UCf6DzMRwj7SJ3nPrZqd5hHw)
 
 Discord: tsnakejake#8364
-
-# NOTE: This course is still under development. More content to come! :D
