@@ -30,13 +30,13 @@ pub contract CryptoPoops {
   pub resource Collection: CollectionPublic {
     pub var ownedNFTs: @{UInt64: NFT}
 
-    // This function adds the NFT token to the ownedNFTs list and will only be called by the account owner of this contract since they will have the Minter in /storage/Minter to actually be able to create an NFT and then deposit it into someone else's Collection
+    // This function adds the NFT token to the ownedNFTs dictionary and will only be called by the account owner of this contract since they will have the Minter in /storage/Minter to actually be able to create an NFT and then deposit it into someone else's Collection
     // Since NFT is a resource, the syntax includes a <- and we use ! to force it
     pub fun deposit(token: @NFT) {
       self.ownedNFTs[token.id] <-! token
     }
 
-    // This function removes an NFT from the ownedNFTs list and will only be able to be called if the user has a Collectin in their /storage/Collection
+    // This function removes an NFT from the ownedNFTs dictionary and will only be able to be called if the user has a Collectin in their /storage/Collection
     pub fun withdraw(withdrawID: UInt64): @NFT {
       let nft <- self.ownedNFTs.remove(key: withdrawID)
               ?? panic("This NFT does not exist in this Collection.")
