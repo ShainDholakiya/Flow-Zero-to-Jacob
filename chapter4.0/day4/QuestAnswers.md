@@ -37,7 +37,6 @@ pub contract CryptoPoops {
     }
 
     // This function removes an NFT from the ownedNFTs list and will only be able to be called if the user has a Collectin in their /storage/Collection
-    // Since NFT is a resource, we must use .remove() for the syntax
     pub fun withdraw(withdrawID: UInt64): @NFT {
       let nft <- self.ownedNFTs.remove(key: withdrawID)
               ?? panic("This NFT does not exist in this Collection.")
