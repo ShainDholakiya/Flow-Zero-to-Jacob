@@ -1,16 +1,16 @@
-# Chapter 5 Day 3 - Creating an NFT Contract: Implementing the NonFungibleToken Standard (Part 3/3)
+# Chapter 5 Day 3 - 创建 NFT 合约：实现 NonFungibleToken 标准 (Part 3/3)
 
-Let's finish our CryptoPoops NFT Contract from Chapter 4 using our new knowledge of the NonFungibleToken standard.
+让我们使用对 NonFungibleToken 标准的新知识来完成第 4 章中的 CryptoPoops NFT 合约。
 
-We will spend this entire day just reforming our NFT Contract to fit the standard, found here: https://github.com/onflow/flow-nft/blob/master/contracts/NonFungibleToken.cdc
+我们将花一整天的时间来改善我们的 NFT 合约以符合标准，可在此处找到：https://github.com/onflow/flow-nft/blob/master/contracts/NonFungibleToken.cdc
 
-## Video
+## 学习视频
 
-Today, we'll cover 31:20 - The End: https://www.youtube.com/watch?v=bQVXSpg6GE8
+今天的内容： 结语: https://www.youtube.com/watch?v=bQVXSpg6GE8
 
-## Implementing the NonFungibleToken Standard
+## 实现 NonFungibleToken 标准
 
-There's a LOT in the NonFungibleToken standard. Let's take a peak at it:
+NonFungibleToken 标准中有很多内容。让我们来看看它：
 
 ```javascript
 /**
@@ -90,9 +90,8 @@ pub contract interface NonFungibleToken {
 ```
 
 <img src="../images/homealone.jpg" />
-Wow. I'm scared.
 
-The good news is that we have actually implemented most of it. Believe it or not, I am such a good teacher that I had us implement 75% of this contract without you even knowing it. Damn, I'm good! Let's look at the contract we wrote so far:
+我们实际上已经实现了其中的大部分内容。让我们看看到目前为止我们写的合约：
 
 ```javascript
 pub contract CryptoPoops {
@@ -173,7 +172,7 @@ pub contract CryptoPoops {
 }
 ```
 
-Not bad, right!? I think we're kicking butt. Remember, in order to implement a contract interface, we have to use the `: {contract interface}` syntax, so let's do that here...
+还不错吧！？记住，为了实现一个合约接口，我们必须使用`: {contract interface}`语法，所以让我们在这里做......
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -182,11 +181,11 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-*Note: because these contracts are getting long, I'm going to start abbreviating them like I did above, and replacing the other content that should be there with "...other stuff..."*
+**注意：因为这些合约越来越长，我将开始像上面一样缩写它们，并将应该存在的其他内容替换为“......其他东西......”**
 
-Remember from last chapter that a contract interface specifies some things we need in our contract if we want to implement it. You'll notice we get a TON of errors in our contract now that we implement it. No worries, we'll fix them. 
+请记住，在上一章中，如果我们想实现它，合约接口指定了我们在合约中需要的一些东西。您会注意到，在我们实现合约后，我们的合约中出现了大量错误。不用担心，我们会修复它们。
 
-The first things you see in the `NonFungibleToken` contract interface are these things:
+在合约接口`NonFungibleToken`中看到的第一件事是：
 
 ```javascript
 pub var totalSupply: UInt64
@@ -198,7 +197,7 @@ pub event Withdraw(id: UInt64, from: Address?)
 pub event Deposit(id: UInt64, to: Address?)
 ```
 
-We already have `totalSupply`, but we need to put the events in our `CryptoPoops` contract or it will complain that they are missing. Let's do that below:
+我们已经有了`totalSupply`，但是我们需要将这些事件放入我们的`CryptoPoops`合约中，否则它会抱怨它们丢失了。下面这样做：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -213,7 +212,7 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Sweet! The next thing the NonFungibleToken standard says we have to do is have an `NFT` resource with an `id` field and it also has to implement `NonFungibleToken.INFT`. Well, we already do the first two things, but it does not implement the `NonFungibleToken.INFT` resource interface like it does in the standard. So let's add that to our contract as well.
+`NonFungibleToken` 标准要求我们做的下一件事是去包含一个带有id字段的NFT资源，并且它还必须实现`NonFungibleToken.INFT`。好吧，我们已经做了前两件事，但是它没有像标准中那样实现`NonFungibleToken.INFT`资源接口。因此，让我们也将其添加到合约中。
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -246,9 +245,9 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Amazing. We're about halfway done.
+可以！我们已经完成了一半。
 
-The next thing you'll see inside the standard is these three resource interfaces:
+下面讨论的是在标准中的三个资源接口：
 
 ```javascript
 pub resource interface Provider {
@@ -270,14 +269,14 @@ pub resource interface CollectionPublic {
 }
 ```
 
-It seems like a lot of code, right? The good news is that, if you remember from the last day, we don't have to re-implement resource interfaces inside our own contract that uses the standard. These interfaces are only defined so that our `Collection` resource can implement them.
+看起来代码很多，对吧？好消息是，如果您还记得前一天的课程，我们不必在使用该标准的自己的合约中重新实现此资源接口。这些接口仅被定义以便我们的`Collection`资源可以实现它们。
 
-Before we make our `Collection` implement these resource interfaces, I will explain what they do:
+在我们`Collection`实现这些资源接口之前，我将解释它们的作用：
 
 ### Provider
-First is the `Provider`. It makes sure that anything that implements it has a `withdraw` function that takes in a `withdrawID` and returns an `@NFT`. **IMPORTANT: Note the type of the return value: `@NFT`.** What NFT resource is that talking about? Is it talking about the `NFT` type inside our `CryptoPoops` contract? No! It's referring to the type inside the `NonFungibleToken` contract interface. Thus, when we implement these functions themselves, we have to make sure we put `@NonFungibleToken.NFT`, and not just `@NFT`. We talked about this in the last chapter as well.
+首先是`Provider`。 它确保实现任何实现该接口的资源必须带有一个`withdraw`函数，接收`withdrawID`并返回`@NFT`。**请注意返回值的类型是：`@NFT`。** 是指什么 NFT 资源？ 它是在谈论我们的“CryptoPoops”合约中的“NFT”类型吗？ 不！ 它指的是 `NonFungibleToken` 合约接口内部的类型。 因此，当我们自己实现这些函数时，我们必须确保我们放置了`@NonFungibleToken.NFT`，而不仅仅是`@NFT`。 我们在上一章也谈到了这一点。
 
-So let's implement the `Provider` now on our Collection:
+现在让我们在 Collection 上实现 `Provider`：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -312,7 +311,7 @@ pub contract CryptoPoops: NonFungibleToken {
 ```
 
 ### Receiver
-Cool! What about the `Receiver` contract interface? It says anything that implements it needs to have a `deposit` function that takes in a `token` parameter that is of `@NonFungibleToken.NFT` type. Let's add `NonFungibleToken.Receiver` to our Collection below:
+Cool! `Receiver` 合约接口怎么样？它说任何实现它的资源都需要一个 `deposit` 函数，该函数接受一个 `@NonFungibleToken.NFT` 类型的 `token` 参数。 让我们将 `NonFungibleToken.Receiver` 添加到下面的集合中：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -350,12 +349,12 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Sweet. Our `withdraw` function and `deposit` functions are now working with the correct types. But there's a few things we can add here:
-1. Let's `emit` the `Withdraw` event inside the `withdraw` function
-2. Let's `emit` the `Deposit` event inside the `deposit` function
-3. Since our `Collection` needs to fit the `NonFungibleToken` contract interface, we need to change `ownedNFTs` to store `@NonFungibleToken.NFT` token types, not just `@NFT` types from our contract. If we don't do this, our `Collection` won't properly fit the standard.
+我们的 `withdraw` 函数和 `deposit` 函数现在可以使用正确的类型。 但是我们可以在这里添加一些额外东西：
+1. 让我们在 `withdraw` 函数中`emit(发出)` `Withdraw` 事件
+2. 让我们在 `deposit` 函数中`emit (发出)` `Deposit` 事件
+3. 由于我们的 `Collection` 需要适配 `NonFungibleToken` 合约接口，我们需要更改 `ownedNFTs` 以存储 `@NonFungibleToken.NFT` 代币类型，而不仅仅是我们合约中的 `@NFT` 类型。 如果我们不这样做，我们的 `Collection` 将不符合标准。
 
-Let's make these three changes below:
+让我们在下面进行这三个更改：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -398,13 +397,13 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Amazing. There's one question you may have:
+现在可能遇到一个问题：
 
-**What is `self.owner?.address`?**
+**什么是 `self.owner?.address`?**
 
- `self.owner` is a piece of code you can use inside any resource that an account is holding. Since a Collection resource will live inside an account's storage, we can use `self.owner` to get the current account that is holding that specific Collection inside their storage. This is super helpful for identifying who is doing an action, especially in the case where we want to communicate who we're depositing to and withdrawing from. `self.owner?.address` is merely the address of the owner.
+ `self.owner` 是一段代码，您可以在帐户持有的任何资源中使用。 由于 Collection 资源将存在于帐户的存储中，因此我们可以使用“self.owner”来获取在其存储中持有该特定 Collection 的当前帐户。 这对于识别谁在执行操作非常有帮助，尤其是在我们想要传达我们正在向谁存款和取款的情况下。 `self.owner?.address` 只是所有者的地址。
 
-Next, think about what the `@NonFungibleToken.NFT` type is. It's a more generic type than just `@NFT`. Technically, literally any NFT on Flow all fit the `@NonFungibleToken.NFT` type. This has pros and cons, but one definite con is that now, anyone can deposit their own NFT type into our Collection. For example, if my friend defines a contract called `BoredApes`, they can technically deposit that into our Collection since it has an `@NonFungibleToken.NFT` type. Thus, we have to add something called a "force cast" to our `deposit` function:
+接下来，想想 `@NonFungibleToken.NFT` 类型是什么。 它是一种比 `@NFT` 更通用的类型。 从字面上看，Flow 上的任何 NFT 都适合`@NonFungibleToken.NFT` 类型。 这有利有弊，但一个明确的缺点是，现在，任何人都可以将自己的 NFT 类型存入我们的 Collection。 例如，如果我的朋友定义了一个名为 `BoredApes` 的合约，他们可以在技术上将其存入我们的 Collection，因为它具有`@NonFungibleToken.NFT` 类型。 因此，我们必须在我们的 `deposit` 函数中添加一个称为“强制转换”的东西：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -446,11 +445,10 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-You'll see we use the "force cast" operator `as!`. In the code above, `@NonFungibleToken.NFT` is a more generic type than `@NFT`. **So, we have to use `as!`, which basically "downcasts" our generic type (`@NonFungibleToken.NFT`) to be a more specific type (`@NFT`).** In this case, `let nft <- token as! @NFT` says: "if `token` is an `@NFT` type, "downcast" it and move it to the `nft` variable. If it's not, panic." Now we can be sure that we can only deposit CryptoPoops into our Collection.
-
+你会看到我们使用“强制转换”操作符 `as!`。 在上面的代码中，`@NonFungibleToken.NFT` 是比 `@NFT` 更通用的类型。 **所以，我们必须使用 `as!`，它基本上将我们的泛型类型（`@NonFungibleToken.NFT`）“向下转换”为更具体的类型（`@NFT`）。** 在这种情况下，`let nft <- token as! @NFT` 是指：“如果 `token` 是 `@NFT` 类型，则将其“向下转换”并将其移动到 `nft` 变量中。如果不是，请报错。” 现在我们可以确定我们只能将 CryptoPoops 存入我们的 Collection。
 
 ### CollectionPublic
-The last resource interface we need to implement is `CollectionPublic`, which looks like this:
+我们需要实现的最后一个资源接口是 `CollectionPublic`，如下所示：
 
 ```javascript
 pub resource interface CollectionPublic {
@@ -460,7 +458,7 @@ pub resource interface CollectionPublic {
 }
 ```
 
-Well, we already have `deposit`, but we need `getIDs` and `borrowNFT`. Let's add the `NonFungibleToken.CollectionPublic` to our Collection below:
+我们已经有了 `deposit`，但我们需要 `getIDs` 和 `borrowNFT`。 让我们将 `NonFungibleToken.CollectionPublic` 添加到下面的Collection中：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -509,9 +507,9 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Cool! We added both `getIDs` (which didn't change from what we had previously), and `borrowNFT`. We had to change the types to `&NonFungibleToken.NFT` instead of just `&NFT` to fit the standard.
+Cool! 我们添加了`getIDs`（与我们之前的内容没有变化）和`borrowNFT`。 我们必须将类型更改为 `&NonFungibleToken.NFT` 而不仅仅是 `&NFT` 以符合标准。
 
-Booooooooooyah! We are SO CLOSE to being done. The last thing the standard wants us to implement is the `createEmptyCollection` function, which we already have! Let's add it below:
+已经快要完成了！标准希望我们实现的最后一件事是我们已经拥有的 `createEmptyCollection` 函数！ 让我们在下面添加它：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -527,9 +525,9 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Of course, we have to make the return type `@NonFungibleToken.Collection` as well.
+当然，我们还必须将返回类型设为 `@NonFungibleToken.Collection`。
 
-Lastly, we want to use the `ContractInitialized` event inside the contract's `init`:
+最后，我们想在合约的 `init` 中使用 `ContractInitialized` 事件：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -543,7 +541,7 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-Now that we have correctly implemented the standard, lets add back our minting functionality as well:
+现在我们已经正确实现了标准，让我们也添加回我们的铸币功能：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -576,7 +574,7 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-AAAAAAND WE'RE DONE!!!!!!!!!!!!!!!! Let's look at the whole contract now:
+我们全部完成了!!!! 现在让我们看一下整个合约：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -660,13 +658,13 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-## The Problem
+## 问题
 
-There is one issue with this CryptoPoops contract. If you look closely, you will notice that there's a very big problem with how the `borrowNFT` function is written inside of the `Collection`. It returns a `&NonFungibleToken.NFT` type instead of a `&NFT` type. Can you see what's bad about that?
+这份 CryptoPoops 合约存在一个问题。 如果你仔细观察，你会发现 `borrowNFT` 函数在 `Collection` 内部的编写方式存在很大的问题。 它返回一个 `&NonFungibleToken.NFT` 类型而不是 `&NFT` 类型。 你能看出这有什么不好吗？
 
-The whole point of `borrowNFT` is to allow us to read the NFT's metadata. But what is exposed by the `&NonFungibleToken.NFT` type? Only the `id` field! Uh oh, we can no longer read the other metadata of our NFT resource.
+“borrowNFT”的全部意义在于允许我们读取 NFT 的元数据。但是 `&NonFungibleToken.NFT` 类型暴露了什么？ 只有“id”字段！ 哦哦，我们不能再读取我们 NFT 资源的其他元数据了。
 
-To fix that, we need to use something called an `auth` reference. If you remember the "force cast" operator `as!` above, it "downcasts" a generic type to a more specific type, and if it doesn't work, it panics. With references, in order to "downcast" you need an "authorized reference" that is marked with the `auth` keyword. We can do that like so:
+为了解决这个问题，我们需要使用一个叫做 `auth` 的引用。 如果您还记得上面的“强制转换”运算符 `as!`，它会将泛型类型“向下转换”为更具体的类型，如果它不起作用，它就会出现错误。 对于引用，为了“向下转换”，您需要一个标有 `auth` 关键字的“授权引用”。 我们可以这样做：
 
 ```javascript
 pub fun borrowAuthNFT(id: UInt64): &NFT {
@@ -675,25 +673,25 @@ pub fun borrowAuthNFT(id: UInt64): &NFT {
 }
 ```
 
-See what we did? We got an authorized reference to the `&NonFungibleToken.NFT` type by putting `auth` in front of it, and then "downcasted" the type using `as!` to an `&NFT` type. When using references, if you want to downcast, you **must** have an `auth` reference. 
+看看我们做了什么？ 通过将 `auth` 放在前面，我们获得了对 `&NonFungibleToken.NFT` 类型的授权引用，然后使用 `as!` 将类型“向下转换”为 `&NFT` 类型。 使用引用时，如果你想向下转换，你**必须**有一个 `auth` 引用。
 
-If `ref` wasn't an `&NFT` type, it would panic, but we know it will always work since in our deposit function we make sure we're storing `@NFT` types.
+如果 `ref` 不是 `&NFT` 类型，它会报错，但我们知道它总是会起作用，因为在我们的存款函数中，我们确保我们存储的是 `@NFT` 类型。
 
-Yaaaaay! Now we can read our NFTs metadata with the `borrowAuthNFT` function. But there's one more problem: `borrowAuthNFT` isn't accessible to the public, because it's not inside `NonFungibleToken.CollectionPublic`. You will solve this problem in your quests.
+啊啊啊！现在我们可以使用 `borrowAuthNFT` 函数读取我们的 NFT 元数据。 但是还有一个问题：`borrowAuthNFT` 不能被公众访问，因为它不在 `NonFungibleToken.CollectionPublic` 中。 你将在你的作业中解决这个问题。
 
-## Conclusion
+## 总结
 
-You have successfully completed your very own NFT contract. And even better, it is now officially a NonFungibleToken contract, meaning you could use this anywhere you want and applications would know they are working with an NFT contract. That is amazing.
+你已经成功完成了你自己的 NFT 合约。更好的是，它现在正式成为一个 NonFungibleToken 合约，这意味着你可以在任何你想要的地方使用它，并且应用程序会知道他们正在使用 NFT 合约。这是惊人的。
 
-Additionally, you have officially completed the first main section of the course. You can call yourself a Cadence developer! I would suggest pausing this course and implementing some of your own contracts, because you now have the knowledge to do so. In the next chapters, we will get into more advanced topics so you can really start becoming a true Jacob.
+此外，您已正式完成课程的第一个主要部分。您可以称自己为 Cadence 开发人员！ 我建议暂停这门课程并实施一些你自己的合约，因为你现在有这样做的知识。在接下来的章节中，我们将进入更高级的主题，以便您真正开始成为真正的Jacob。
 
 ## Quests
 
-1. What does "force casting" with `as!` do? Why is it useful in our Collection?
+1. 使用 `as!` 的“强制转换”有什么作用？ 为什么它在我们的Collection中有用？
 
-2. What does `auth` do? When do we use it?
+2. `auth` 有什么作用？ 我们什么时候使用它？
 
-3. This last quest will be your most difficult yet. Take this contract:
+3. 这最后一个作业将是你迄今为止最困难的。 阅读这个合约：
 
 ```javascript
 import NonFungibleToken from 0x02
@@ -777,6 +775,6 @@ pub contract CryptoPoops: NonFungibleToken {
 }
 ```
 
-and add a function called `borrowAuthNFT` just like we did in the section called "The Problem" above. Then, find a way to make it publically accessible to other people so they can read our NFT's metadata. Then, run a script to display the NFTs metadata for a certain `id`.
+并添加一个名为 `borrowAuthNFT` 的函数，就像我们在上面的“问题”一节中所做的那样。然后，找到一种方法让其他人可以公开访问它，以便他们可以阅读我们 NFT 的元数据。然后，运行一个脚本来显示某个“id”的 NFT 元数据。
 
-You will have to write all the transactions to set up the accounts, mint the NFTs, and then the scripts to read the NFT's metadata. We have done most of this in the chapters up to this point, so you can look for help there :)
+您必须编写所有交易来设置账户、铸造 NFT，然后编写脚本来读取 NFT 的元数据。 到目前为止，我们已经在各章中完成了大部分工作，因此您可以在那里寻求帮助 :)

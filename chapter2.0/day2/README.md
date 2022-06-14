@@ -1,6 +1,6 @@
 # Chapter 2 Day 2 - Transactions and Scripts
 
-Hey there you crazy Cadence people! We are BACK for another day of content, and in this day, we will be going more in-depth on transactions and scripts. If you haven't already, make sure you read the [introductory part to transactions and scripts in Chapter 1 Day 1](https://github.com/jacob-tucker/Flow-Zero-to-Jacob/tree/main/chapter1.0/day1#transactions--scripts).
+Hey there you crazy Cadence people! We are BACK for another day of content, and in this day, we will be going more in-depth on transactions and scripts. If you haven't already, make sure you read the [introductory part to transactions and scripts in Chapter 1 Day 1](https://github.com/emerald-dao/beginner-cadence-course/tree/main/chapter1.0/day1#transactions--scripts).
 
 ## Video
 
@@ -122,7 +122,7 @@ transaction(myNewGreeting: String) {
 }
 ```
 
-Now, on the right side, you'll see a prompt pop up. We can type in our new greeting into the little box! Because the Flow playground is a little glitchy, you have to surround your new greeting with quotes, like this: "Goodbye, World!". So let's type that in like so:
+Now, on the right side, you'll see a prompt pop up. We can type in our new greeting into the little box! Let's type "Goodbye, World!":
 
 <img src="../images/txgoodbye.PNG" alt="drawing" size="400" />
 
